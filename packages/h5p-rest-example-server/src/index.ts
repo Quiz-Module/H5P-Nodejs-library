@@ -191,9 +191,34 @@ const start = async (): Promise<void> => {
 
     server.use(express.static(path.resolve('public')));
 
+    const corsConfig = (config as any).cors || {};
+    const corsAllowedOrigins: string[] = corsConfig.allowedOrigins || [
+        'http://localhost:4000',
+        'http://127.0.0.1:4000'
+    ];
+    const corsAllowedOriginRegexes: RegExp[] = (
+        corsConfig.allowedOriginRegexes || []
+    ).map((pattern: string) => new RegExp(pattern));
+
     server.use(
         cors({
-            origin: ['http://localhost:4000', 'http://127.0.0.1:4000'],
+            origin: (origin, callback) => {
+                if (!origin) {
+                    callback(null, true);
+                    return;
+                }
+                if (corsAllowedOrigins.includes(origin)) {
+                    callback(null, true);
+                    return;
+                }
+                if (
+                    corsAllowedOriginRegexes.some((regex) => regex.test(origin))
+                ) {
+                    callback(null, true);
+                    return;
+                }
+                callback(new Error('Not allowed by CORS'));
+            },
             credentials: true
         })
     );

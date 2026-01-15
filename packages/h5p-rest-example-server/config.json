@@ -23,6 +23,16 @@
             "auth": "http://localhost:8080/auth-data"
         }
     },
+    "cors": {
+        "allowedOrigins": [
+            "http://localhost:4000",
+            "http://127.0.0.1:4000",
+            "https://staging-admin.mockacad.com"
+        ],
+        "allowedOriginRegexes": [
+            "^https://([a-z0-9-]+\\.)*mockacad\\.com$"
+        ]
+    },
     "customization": {
         "global": {
             "player": {
