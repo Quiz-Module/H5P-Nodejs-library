@@ -192,6 +192,7 @@ const start = async (): Promise<void> => {
 
     server.use(express.static(path.resolve('public')));
 
+
     // Configure CORS with origins from environment variable or defaults
     const allowedOrigins = process.env.CORS_ALLOWED_ORIGINS
         ? process.env.CORS_ALLOWED_ORIGINS.split(',').map((origin) =>

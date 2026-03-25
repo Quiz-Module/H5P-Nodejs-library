@@ -1,7 +1,7 @@
-import * as H5P from '@lumieducation/h5p-server';
+import os from 'os';
 import { Request } from 'express';
 import { rm } from 'fs/promises';
-import os from 'os';
+import * as H5P from '@lumieducation/h5p-server';
 /**
  * Displays links to the server at all available IP addresses.
  * @param port The port at which the server can be accessed.
