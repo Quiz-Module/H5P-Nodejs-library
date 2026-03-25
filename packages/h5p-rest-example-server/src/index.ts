@@ -1,3 +1,4 @@
+import 'dotenv/config';
 import { dir, DirectoryResult } from 'tmp-promise';
 import bodyParser from 'body-parser';
 import express from 'express';
@@ -191,34 +192,22 @@ const start = async (): Promise<void> => {
 
     server.use(express.static(path.resolve('public')));
 
-    const corsConfig = (config as any).cors || {};
-    const corsAllowedOrigins: string[] = corsConfig.allowedOrigins || [
-        'http://localhost:4000',
-        'http://127.0.0.1:4000'
-    ];
-    const corsAllowedOriginRegexes: RegExp[] = (
-        corsConfig.allowedOriginRegexes || []
-    ).map((pattern: string) => new RegExp(pattern));
+
+    // Configure CORS with origins from environment variable or defaults
+    const allowedOrigins = process.env.CORS_ALLOWED_ORIGINS
+        ? process.env.CORS_ALLOWED_ORIGINS.split(',').map((origin) =>
+              origin.trim()
+          )
+        : [
+              'http://localhost:3000',
+              'http://localhost:4000',
+              'http://127.0.0.1:3000',
+              'http://127.0.0.1:4000'
+          ];
 
     server.use(
         cors({
-            origin: (origin, callback) => {
-                if (!origin) {
-                    callback(null, true);
-                    return;
-                }
-                if (corsAllowedOrigins.includes(origin)) {
-                    callback(null, true);
-                    return;
-                }
-                if (
-                    corsAllowedOriginRegexes.some((regex) => regex.test(origin))
-                ) {
-                    callback(null, true);
-                    return;
-                }
-                callback(new Error('Not allowed by CORS'));
-            },
+            origin: allowedOrigins,
             credentials: true
         })
     );
