@@ -1,11 +1,12 @@
 import { Cache, caching } from 'cache-manager';
 import redisStore from 'cache-manager-redis-store';
 
-import * as H5P from '@lumieducation/h5p-server';
+import ClamAVScanner from '@lumieducation/h5p-clamav-scanner';
 import * as dbImplementations from '@lumieducation/h5p-mongos3';
+import * as H5P from '@lumieducation/h5p-server';
 import { IContentMetadata, IUser } from '@lumieducation/h5p-server';
 import SvgSanitizer from '@lumieducation/h5p-svg-sanitizer';
-import ClamAVScanner from '@lumieducation/h5p-clamav-scanner';
+import { alterLibrarySemanticsHook } from './utils';
 
 /**
  * Create a H5PEditor object.
@@ -129,6 +130,12 @@ export default async function createH5PEditor(
             enableLibraryNameLocalization: true,
             hooks,
             permissionSystem,
+            customization: {
+                alterLibrarySemantics: alterLibrarySemanticsHook,
+                global: {
+                    scripts: ['/h5p-editor-table-defaults.js']
+                }
+            },
             // We've allowed SVGs in config.json, so we need to sanitize SVGs
             fileSanitizers: [new SvgSanitizer()],
             // You might not want to use ClamAV or opt out of using a virus
