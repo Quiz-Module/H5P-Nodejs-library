@@ -192,18 +192,31 @@ const start = async (): Promise<void> => {
 
     server.use(express.static(path.resolve('public')));
 
-
-    // Configure CORS with origins from environment variable or defaults
-    const allowedOrigins = process.env.CORS_ALLOWED_ORIGINS
-        ? process.env.CORS_ALLOWED_ORIGINS.split(',').map((origin) =>
-              origin.trim()
-          )
-        : [
-              'http://localhost:3000',
-              'http://localhost:4000',
-              'http://127.0.0.1:3000',
-              'http://127.0.0.1:4000'
-          ];
+    // Configure CORS with origins from environment variable or defaults.
+    // Entries containing '*' become regexes, as cors only matches strings
+    // exactly.
+    const allowedOrigins: (string | RegExp)[] = (
+        process.env.CORS_ALLOWED_ORIGINS
+            ? process.env.CORS_ALLOWED_ORIGINS.split(',').map((origin) =>
+                  origin.trim()
+              )
+            : [
+                  'http://localhost:3000',
+                  'http://localhost:4000',
+                  'http://127.0.0.1:3000',
+                  'http://127.0.0.1:4000'
+              ]
+    )
+        .filter((origin) => origin.length > 0)
+        .map((origin) =>
+            origin.includes('*')
+                ? new RegExp(
+                      `^${origin
+                          .replace(/[.+?^${}()|[\]\\]/g, '\\$&')
+                          .replace(/\*/g, '[^.]+')}$`
+                  )
+                : origin
+        );
 
     server.use(
         cors({
