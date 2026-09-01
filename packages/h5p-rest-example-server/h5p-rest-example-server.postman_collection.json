@@ -1,0 +1,263 @@
+{
+  "info": {
+    "name": "H5P REST Example Server",
+    "_postman_id": "3a7d3a7b-1a2a-4a1c-9e1b-8c3c2c8d6a1f",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    { "key": "baseUrl", "value": "http://localhost:8080" },
+    { "key": "h5pBasePath", "value": "/h5p" },
+    { "key": "contentId", "value": "1" },
+    { "key": "contextId", "value": "" },
+    { "key": "asUserId", "value": "" },
+    { "key": "readOnlyState", "value": "no" },
+    { "key": "ubername", "value": "H5P.Example-1.0" },
+    { "key": "libraryFilePath", "value": "library.json" },
+    { "key": "contentFilePath", "value": "content.json" },
+    { "key": "tempFilePath", "value": "example.tmp" },
+    { "key": "dataType", "value": "state" },
+    { "key": "subContentId", "value": "0" }
+  ],
+  "item": [
+    {
+      "name": "REST Content Routes",
+      "item": [
+        {
+          "name": "List Content",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}{{h5pBasePath}}/"
+          }
+        },
+        {
+          "name": "Create Content",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"library\": \"H5P.Example 1.0\",\n  \"params\": {\n    \"metadata\": {\n      \"title\": \"Example\"\n    },\n    \"params\": {}\n  }\n}"
+            },
+            "url": "{{baseUrl}}{{h5pBasePath}}/"
+          }
+        },
+        {
+          "name": "Update Content",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"library\": \"H5P.Example 1.0\",\n  \"params\": {\n    \"metadata\": {\n      \"title\": \"Example (Updated)\"\n    },\n    \"params\": {}\n  }\n}"
+            },
+            "url": "{{baseUrl}}{{h5pBasePath}}/{{contentId}}"
+          }
+        },
+        {
+          "name": "Delete Content",
+          "request": {
+            "method": "DELETE",
+            "url": "{{baseUrl}}{{h5pBasePath}}/{{contentId}}"
+          }
+        },
+        {
+          "name": "Duplicate Content",
+          "request": {
+            "method": "POST",
+            "url": "{{baseUrl}}{{h5pBasePath}}/{{contentId}}/duplicate"
+          }
+        },
+        {
+          "name": "Play Content",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}{{h5pBasePath}}/{{contentId}}/play?contextId={{contextId}}&asUserId={{asUserId}}&readOnlyState={{readOnlyState}}"
+          }
+        },
+        {
+          "name": "Edit Content (Detailed Info)",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}{{h5pBasePath}}/{{contentId}}/edit"
+          }
+        }
+      ]
+    },
+    {
+      "name": "H5P Ajax / Core / Editor",
+      "item": [
+        {
+          "name": "Ajax GET",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}{{h5pBasePath}}/ajax"
+          }
+        },
+        {
+          "name": "Ajax POST",
+          "request": {
+            "method": "POST",
+            "url": "{{baseUrl}}{{h5pBasePath}}/ajax"
+          }
+        },
+        {
+          "name": "Get Params (content.json)",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}{{h5pBasePath}}/params/{{contentId}}"
+          }
+        },
+        {
+          "name": "Download H5P",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}{{h5pBasePath}}/download/{{contentId}}"
+          }
+        },
+        {
+          "name": "Get Library File",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}{{h5pBasePath}}/libraries/{{ubername}}/{{libraryFilePath}}"
+          }
+        },
+        {
+          "name": "Get Content File",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}{{h5pBasePath}}/content/{{contentId}}/{{contentFilePath}}"
+          }
+        },
+        {
+          "name": "Get Temp File",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}{{h5pBasePath}}/temp-files/{{tempFilePath}}"
+          }
+        },
+        {
+          "name": "Core Static (example)",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}{{h5pBasePath}}/core/js/h5p.js"
+          }
+        },
+        {
+          "name": "Editor Static (example)",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}{{h5pBasePath}}/editor/scripts/h5peditor.js"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Content User Data",
+      "item": [
+        {
+          "name": "Get User Data",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}{{h5pBasePath}}/contentUserData/{{contentId}}/{{dataType}}/{{subContentId}}"
+          }
+        },
+        {
+          "name": "Set User Data",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"data\": {},\n  \"preload\": false,\n  \"invalidate\": false\n}"
+            },
+            "url": "{{baseUrl}}{{h5pBasePath}}/contentUserData/{{contentId}}/{{dataType}}/{{subContentId}}"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Finished Data",
+      "item": [
+        {
+          "name": "Set Finished",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"contentId\": \"{{contentId}}\",\n  \"score\": 0,\n  \"maxScore\": 0,\n  \"opened\": 0,\n  \"finished\": 0,\n  \"time\": 0\n}"
+            },
+            "url": "{{baseUrl}}{{h5pBasePath}}/finishedData"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Library Administration",
+      "item": [
+        {
+          "name": "List Libraries",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}{{h5pBasePath}}/libraries"
+          }
+        },
+        {
+          "name": "Upload Libraries",
+          "request": {
+            "method": "POST",
+            "url": "{{baseUrl}}{{h5pBasePath}}/libraries"
+          }
+        },
+        {
+          "name": "Get Library",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}{{h5pBasePath}}/libraries/{{ubername}}"
+          }
+        },
+        {
+          "name": "Patch Library",
+          "request": {
+            "method": "PATCH",
+            "url": "{{baseUrl}}{{h5pBasePath}}/libraries/{{ubername}}"
+          }
+        },
+        {
+          "name": "Delete Library",
+          "request": {
+            "method": "DELETE",
+            "url": "{{baseUrl}}{{h5pBasePath}}/libraries/{{ubername}}"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Content Type Cache",
+      "item": [
+        {
+          "name": "Get Cache Update",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}{{h5pBasePath}}/content-type-cache/update"
+          }
+        },
+        {
+          "name": "Post Cache Update",
+          "request": {
+            "method": "POST",
+            "url": "{{baseUrl}}{{h5pBasePath}}/content-type-cache/update"
+          }
+        }
+      ]
+    }
+  ]
+}
